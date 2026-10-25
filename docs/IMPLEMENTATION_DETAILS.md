@@ -1,8 +1,6 @@
 # Implementation details
 
-This repository provides an executable implementation of the architecture, training stages, evaluation protocols, and ablations described in [Semantic-aware decoding of covert inner speech: A multimodal EEG–EMG–audio framework](https://doi.org/10.1016/j.bspc.2026.111527). It distributes code and documentation without experimental recordings or published results. It does not contain the authors' original training code or historical checkpoints.
-
-`configs/paper.yaml` records the article's reported settings together with explicit implementation defaults for details the article leaves unspecified. The distinctions below define the software contract.
+This repository provides an executable implementation of the architecture, training stages, evaluation protocols, and ablations described in [Semantic-aware decoding of covert inner speech: A multimodal EEG–EMG–audio framework](https://doi.org/10.1016/j.bspc.2026.111527). 
 
 ## Signal preparation
 
@@ -10,7 +8,7 @@ The continuous input consists of 63 scalp EEG channels and two EMG channels, rec
 
 EEG is repaired at non-finite samples by linear interpolation, linearly detrended, and filtered with a 1,501-tap Hamming-window FIR band-pass from 0.5 to 40 Hz. Filtering uses SciPy `firwin` and forward–backward `filtfilt`, with odd-extension padding of `3 * (taps - 1)` samples. The common-average reference excludes identified bad channels. Each EEG channel is then centered across time.
 
-Signal quality is assessed in one-second windows. Channel peak-to-peak amplitude and variance are summarized across windows. A channel is flat when its median peak-to-peak amplitude is at most one millionth of the across-channel median, subject to a numerical floor. High-amplitude and high-variance channels are identified using log-transformed values and a robust median/MAD score. Bad windows use the same robust measures within each usable channel. The configured threshold is six robust standard deviations. Original non-finite EEG or EMG samples are also annotated. These thresholds and interpolation rules are explicit defaults because the article does not specify their numerical definitions.
+Signal quality is assessed in one-second windows. Channel peak-to-peak amplitude and variance are summarized across windows. A channel is flat when its median peak-to-peak amplitude is at most one millionth of the across-channel median, subject to a numerical floor. High-amplitude and high-variance channels are identified using log-transformed values and a robust median/MAD score. Bad windows use the same robust measures within each usable channel. The configured threshold is six robust standard deviations. Original non-finite EEG or EMG samples are also annotated. 
 
 FastICA retains 99% of EEG variance, uses seed 2026 and a maximum of 1,000 iterations, and omits bad intervals when fitting. MNE automatically identifies putative ocular components using the available usable `Fp1`, `Fp2`, `AF7`, and `AF8` channels. The union of detected components is removed. Identified bad channels are subsequently interpolated using the `standard_1020` montage. Missing frontal references, insufficient clean data, and incompatible montage names produce errors; the implementation does not silently bypass ICA. Setting `preprocessing.ica: false` deliberately disables that step.
 
@@ -39,7 +37,7 @@ The complete file interfaces are specified in [data interfaces](../data/README.m
 | Semantic head | Linear 256→384; L2 normalization |
 | Classifier | ArcFace with normalized feature and class-weight vectors |
 
-The implementation follows Table 2's four-block 1D encoder. The article's prose also describes an EEGNet-inspired temporal/spatial backbone; a separate depthwise spatial EEGNet architecture is not inferred from that description.
+The implementation follows Table 2's four-block 1D encoder. The article's prose also describes an EEGNet-inspired temporal/spatial backbone.
 
 Fusion follows Table 2's explicit linear projection. The surrounding prose mentions nonlinearity and normalization without specifying layers; no additional fusion activation or normalization is inserted. Convolution and linear biases use PyTorch defaults.
 
@@ -116,5 +114,3 @@ Paired ablation analysis requires the same participants, dataset hash, configura
 ## Traceability and verification
 
 The CLI records the normalized configuration, dataset hash, prototype hash, input route, execution device, saved split indices, stage-selection information, and optional preparation provenance. Checkpoints preserve model settings and the selected trained weights. Intermediate histories and evaluation outputs are created only when their commands run locally; none are distributed in the code package.
-
-The `verify` command checks configuration and model dimensions without recordings. The `smoke` command generates a synthetic software fixture and executes reduced training to check integration. Synthetic signals and random test prototypes are limited to this diagnostic path; they are not experimental observations or estimates of the article's performance. Tests exercise numerical losses, model behavior, partition boundaries, preprocessing, calibration, and integration.
