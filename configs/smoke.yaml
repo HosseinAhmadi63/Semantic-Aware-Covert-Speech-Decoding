@@ -1,0 +1,43 @@
+data:
+  manifest: data/raw/manifest.csv
+  prepared: data/prepared/dataset.npz
+preprocessing:
+  ica: false
+  seed: 2026
+  eeg_taps: 1501
+  emg_taps: 331
+  quality_threshold: 6.0
+  notch_frequency: 50.0
+  notch_q: 30.0
+semantic:
+  model: sentence-transformers/all-MiniLM-L6-v2
+  revision: 1110a243fdf4706b3f48f1d95db1a4f5529b4d41
+  sentences:
+    - Quiero agua
+    - Necesito ir al baño
+    - Enciende la luz
+    - Tengo dolor
+  output: data/semantic/prototypes.npz
+training:
+  seed: 2026
+  batch_size: 32
+  epochs: [1, 1, 1, 1]
+  learning_rates: [0.001, 0.001, 0.0001, 0.0001]
+  weight_decay: 0.0001
+  patience: 1
+  supcon_temperature: 0.35
+  ntx_temperature: 0.25
+  semantic_weight: 0.5
+  coral_weight: 0.15
+  arcface_scale: 30.0
+  arcface_margin: 0.5
+  restart_period: 2
+  label_smoothing: 0.1
+  class_aware_ntx: true
+  device: cpu
+  num_threads: 2
+  deterministic: true
+  log_every: 10
+output:
+  directory: results/smoke
+  bootstrap_resamples: 999

@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "Please cite the accompanying article when using this implementation."
+title: "Semantic-Aware Covert Speech Decoding"
+type: software
+version: 1.0.0
+license: MIT
+authors:
+  - family-names: Ahmadi
+    given-names: Hossein
+preferred-citation:
+  type: article
+  title: "Semantic-aware decoding of covert inner speech: A multimodal EEG–EMG–audio framework"
+  authors:
+    - family-names: Ahmadi
+      given-names: Hossein
+    - family-names: Santamaría-Vázquez
+      given-names: Eduardo
+    - family-names: Mesin
+      given-names: Luca
+    - family-names: Hornero
+      given-names: Roberto
+  journal: "Biomedical Signal Processing and Control"
+  volume: 129
+  issue: "Part B"
+  start: 111527
+  year: 2027
+  doi: 10.1016/j.bspc.2026.111527

@@ -1,0 +1,14 @@
+include README.md LICENSE CITATION.cff THIRD_PARTY_NOTICES.md
+include main.py requirements.txt environment.yml
+recursive-include configs *.yaml
+recursive-include docs *.md
+recursive-include data README.md
+recursive-include scripts *.py
+recursive-include tests *.py
+recursive-include .run *.xml
+recursive-include .github *.yml
+global-exclude *.py[cod]
+prune results
+prune data/raw
+prune data/prepared
+prune data/semantic
