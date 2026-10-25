@@ -9,7 +9,7 @@ Python and PyCharm implementation accompanying:
 
 The implementation covers continuous EEG and EMG preprocessing, overt audio encoding, semantic prototypes, four-stage model training, subject-held-out covert evaluation with overt calibration, strict LOSO, within-subject leave-one-run-out evaluation, ablations, calibrated metrics, participant-level statistics, and figures generated from local runs.
 
-This repository distributes source code and configuration only. Recordings, trained weights, predictions, and experimental results are excluded. The implementation follows the published methods; settings absent from the article are specified in [Implementation details](docs/IMPLEMENTATION_DETAILS.md).
+This repository distributes source code and configuration. The implementation follows the published methods in [Implementation details](docs/IMPLEMENTATION_DETAILS.md).
 
 ## Installation
 
@@ -73,35 +73,6 @@ python main.py smoke
 ```
 
 The smoke command uses generated signals and random semantic vectors solely to test software execution. It does not download data, represent an experiment, or estimate article performance. Its local artifacts are ignored by Git.
-
-## Data preparation and training
-
-The article states that the authors do not have permission to share the recordings. Local recordings can be supplied through the documented CSV/NPZ/WAV interface. The exact fields and array dimensions are described in [Data format](data/README.md).
-
-Place the raw recording files and the marker manifest under `data/raw/`, then execute:
-
-```bash
-python main.py prepare --config configs/paper.yaml
-python main.py prototypes --config configs/paper.yaml
-python main.py train --config configs/paper.yaml --variant B0
-```
-
-The prototype command downloads the pinned pretrained sentence model on its first run. For an already prepared dataset, `train` does not require raw recordings. The `run` command prepares missing inputs, creates missing semantic prototypes, and trains the selected variant:
-
-```bash
-python main.py run --config configs/paper.yaml --variant B0
-```
-
-For one participant, CPU execution, or another experimental condition:
-
-```bash
-python main.py train --subject S01 --device cpu
-python main.py train --variant X2
-python main.py train --variant X1
-python main.py train --variant S3-C
-```
-
-`--subject` must match a subject identifier in the local dataset. `--run` selects a run only for within-subject variants. Completed folds are retained; `--overwrite` reruns them. Configuration and input fingerprints isolate different runs.
 
 ## Experimental variants
 
