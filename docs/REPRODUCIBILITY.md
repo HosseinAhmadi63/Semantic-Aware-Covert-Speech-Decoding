@@ -1,14 +1,12 @@
 # Execution and traceability
 
-This repository implements the article's methods. It contains no experimental recordings, historical model weights, predictions, or published result tables. Software verification uses numerical checks and generated fixtures. No claim of numerical reproduction is made.
-
-The full-method configuration is `configs/paper.yaml`. The software-check configuration is `configs/smoke.yaml`. Both are complete configurations; reduced epoch limits and generated fixtures are confined to the software-check route.
+This repository implements the article's methods. The full-method configuration is `configs/paper.yaml`. The software-check configuration is `configs/smoke.yaml`. Both are complete configurations; reduced epoch limits and generated fixtures are confined to the software-check route.
 
 Each training directory is identified by a normalized configuration hash, prepared-data SHA-256 digest, semantic-prototype SHA-256 digest, and experimental variant. P1 uses a distinct identifier for its absent semantic supervision. The run manifest records the complete configuration, actual execution device, input checksum, prototype checksum, and preparation provenance when available. A copy of the exact prototype archive is retained with the local run. Re-evaluation validates and uses this snapshot.
 
 Preparation writes a quality report containing preprocessing settings, manifest checksum, exclusions, and the prepared-data checksum. Training rejects a prepared array whose quality report conflicts with the selected preprocessing settings or whose content has changed. An externally prepared NPZ without this report is recorded as `prepared_external`; its preprocessing cannot be inferred from the arrays. To incorporate changed raw files or annotations, execute `prepare` again explicitly.
 
-The configured seed controls NumPy, Python, PyTorch, split generation, and ICA. Deterministic PyTorch algorithms are enabled by default, and CUDA workspace configuration is set before initialization. Seeds and deterministic settings do not guarantee identical numerical output across hardware, library versions, or operating systems.
+The configured seed controls NumPy, Python, PyTorch, split generation, and ICA. Deterministic PyTorch algorithms are enabled by default, and CUDA workspace configuration is set before initialization. 
 
 The main protocol excludes the held-out participant's covert trials from training, validation, model selection, and calibration. It permits the participant's overt trials in the pooled overt development split. X2 excludes all development data from the held-out participant. Within-subject variants exclude the selected run from both overt and covert development pools. Stage 3 pairing uses the intersection of the designated overt-training and covert-training partitions only.
 
