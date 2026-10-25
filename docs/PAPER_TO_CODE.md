@@ -2,7 +2,6 @@
 
 Reference: Ahmadi, H., Santamaría-Vázquez, E., Mesin, L., and Hornero, R. [Semantic-aware decoding of covert inner speech: A multimodal EEG–EMG–audio framework](https://doi.org/10.1016/j.bspc.2026.111527). *Biomedical Signal Processing and Control*, 129, 111527.
 
-The repository implements the reported methods as executable software. It contains no experimental recordings, transcribed result tables, or pretrained experiment checkpoints. Details not fully specified in the article are fixed and identified in [implementation details](IMPLEMENTATION_DETAILS.md).
 
 | Article component | Source | Configuration or interface |
 |---|---|---|
@@ -31,13 +30,3 @@ The repository implements the reported methods as executable software. It contai
 | Table 4: within-subject LORO | `data.py`: `fold_targets`, `make_splits` | `X1`, `S1-L`, `S2-L`, `S3-L`; held-out run excluded in both phases |
 | Tables 3–5: newly computed summaries | `metrics.py`, `analysis.py` | Locally generated outputs only; no published values embedded |
 | Performance and calibration visual summaries | `analysis.py`: `create_figures` | Figures from locally generated fold metrics |
-
-## Scope of graphical analysis
-
-The code generates performance and reliability summaries from new runs. It does not bundle or reconstruct the article's illustrative single-trial traces, representative topographic maps, time–frequency panels, or unpublished trial-level figure inputs. The model exposes signal, contrastive, semantic, and classification outputs for additional analyses.
-
-## Scientific boundaries
-
-The main condition permits target-participant overt calibration and must be identified as such. It is distinct from strict LOSO. All held-out covert data remain outside training, selection, pairing, and temperature calibration. Paired ablation tests apply only to conditions retaining the same label space and cross-participant evaluation regime.
-
-The executable package uses Table 2's explicit convolution and fusion specifications, documents unsupplied numerical defaults, and records the active configuration with each locally executed run. It does not claim numerical identity with historical experiments.
